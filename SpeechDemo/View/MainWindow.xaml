@@ -1,0 +1,72 @@
+﻿<Window x:Class="SpeechDemo.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModel="clr-namespace:SpeechDemo.ViewModel"
+        Title="Syn Speech - Speech Recognition Demo" Height="480" Width="640">
+    <Window.DataContext>
+        <viewModel:RecognitionContext/>
+    </Window.DataContext>
+    <Grid Margin="10">
+        <TabControl>
+            <TabItem Header="Recognition using Grammar">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="21*"/>
+                        <RowDefinition Height="20*"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <DockPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="200*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="{Binding MicLevelString}"/>
+                            <ProgressBar Grid.Column="1" Name="MicIndicator" Minimum="0" Maximum="100" Value="{Binding MicLevel}" />
+                        </Grid>
+                    </DockPanel>
+                    <TextBox Grid.Row="1" Text="{Binding Choices}" VerticalScrollBarVisibility="Auto" IsReadOnly="True"  />
+                    <TextBox  Name="ChoiceBox" Grid.Row="2" Text="{Binding GrammarStatus}" VerticalScrollBarVisibility="Auto" IsReadOnly="True"  />
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="148*"/>
+                            <ColumnDefinition Width="153*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Load Grammar" Command="{Binding LoadGrammarCommand}" IsEnabled="{Binding CanLoadGrammar}" />
+                        <Button IsEnabled="{Binding CanListen}" Command="{Binding StartListeningCommand}" Grid.Column="1" Content="{Binding ListenerString}"   />
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Transcribe Audio">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="294*"/>
+
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <DockPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="200*"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </DockPanel>
+                    <Label Grid.Row="0" Content="Click on 'Load Models' and then Press 'Transcribe' to select an Audio File."></Label>
+                    <TextBox Name="ConsoleBox" Grid.Row="1" Text="{Binding TranscribeStatus}"  VerticalScrollBarVisibility="Auto" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" />
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="148*"/>
+                            <ColumnDefinition Width="153*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Content="Load Models" Name="LoadButton" Command="{Binding LoadModelCommand}" IsEnabled="{Binding CanLoadModels}"/>
+                        <Button IsEnabled="{Binding CanTranscribe}" Grid.Column="1"  Content="Transcribe..." Name="TranscribeButton" Click="TranscribeButton_OnClick" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

@@ -1,0 +1,3 @@
+#JSGF V1.0;
+grammar hello;
+public <command> = ( one million dollars | how are you | hello there | happy new year | you are welcome );
