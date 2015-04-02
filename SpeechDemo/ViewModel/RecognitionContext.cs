@@ -42,24 +42,31 @@ namespace SpeechDemo.ViewModel
 
         public RecognitionContext()
         {
-            Choices = "Press 'Load Grammar' and then click on 'Start Listening'" +
-                " and speak out any of the following \n\n1. One million dollars\n2. How are you\n3. Hello there"+
-                "\n4. You are welcome\n5. Happy New Year\n\n Once you'v spoken the sentence click on 'Stop Listening'";
+            try
+            {
+                Choices = "Press 'Load Grammar' and then click on 'Start Listening'" +
+            " and speak out any of the following \n\n1. One million dollars\n2. How are you\n3. Hello there" +
+            "\n4. You are welcome\n5. Happy New Year\n\n Once you'v spoken the sentence click on 'Stop Listening'";
 
-            ListenerString = "Start Listening";
-            Logger.LogReceived += LoggerMessageReceeived;
-            CanLoadModels = true;
-            CanLoadGrammar = true;
+                ListenerString = "Start Listening";
+                Logger.LogReceived += LoggerMessageReceeived;
+                CanLoadModels = true;
+                CanLoadGrammar = true;
 
-            LoadModelCommand = new DelegateCommand(LoadModelsMultiThread);
-            LoadGrammarCommand = new DelegateCommand(LoadGrammarMultiThread);
-            StartRecognitionCommand = new DelegateCommand(StartRecognitionMultiThread);
-            StartListeningCommand = new DelegateCommand(StartListening);
+                LoadModelCommand = new DelegateCommand(LoadModelsMultiThread);
+                LoadGrammarCommand = new DelegateCommand(LoadGrammarMultiThread);
+                StartRecognitionCommand = new DelegateCommand(StartRecognitionMultiThread);
+                StartListeningCommand = new DelegateCommand(StartListening);
 
-            
-            _micTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1) };
-            _micTimer.Tick += micTimer_Elapsed;
-            _micTimer.Start();
+
+                _micTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1) };
+                _micTimer.Tick += micTimer_Elapsed;
+                _micTimer.Start();
+            }
+            catch (Exception exception)
+            {
+                this.LogError(exception);
+            }
         }
 
         #region Properties
@@ -187,25 +194,32 @@ namespace SpeechDemo.ViewModel
         }
         public void LoadGrammar()
         {
-            CanLoadGrammar = false;
-            CanLoadModels = true;
-
-            var modelPath = Path.Combine(Directory.GetCurrentDirectory(), "Models");
-            var dictionaryPath = Path.Combine(modelPath, "cmudict-en-us.dict");
-            var languageModelPath = Path.Combine(modelPath, "en-us.lm.dmp");
-            var configuration = new Configuration
+            try
             {
-                AcousticModelPath = modelPath,
-                DictionaryPath = dictionaryPath,
-                LanguageModelPath = languageModelPath,
-                UseGrammar = true,
-                GrammarPath = "Models",
-                GrammarName = "hello"
-            };
-            _recognizer = new StreamSpeechRecognizer(configuration);
+                CanLoadGrammar = false;
+                CanLoadModels = true;
 
-            CanListen = true;
-            CanTranscribe = false;
+                var modelPath = Path.Combine(Directory.GetCurrentDirectory(), "Models");
+                var dictionaryPath = Path.Combine(modelPath, "cmudict-en-us.dict");
+                var languageModelPath = Path.Combine(modelPath, "en-us.lm.dmp");
+                var configuration = new Configuration
+                {
+                    AcousticModelPath = modelPath,
+                    DictionaryPath = dictionaryPath,
+                    LanguageModelPath = languageModelPath,
+                    UseGrammar = true,
+                    GrammarPath = "Models",
+                    GrammarName = "hello"
+                };
+                _recognizer = new StreamSpeechRecognizer(configuration);
+
+                CanListen = true;
+                CanTranscribe = false;
+            }
+            catch (Exception exception)
+            {
+                this.LogError(exception);
+            }
         }
         public DelegateCommand LoadGrammarCommand { get; set; }
 
@@ -217,22 +231,29 @@ namespace SpeechDemo.ViewModel
         }
         public void LoadModels()
         {
-            CanLoadModels = false;
-            CanLoadGrammar = true;
-
-            var modelPath = Path.Combine(Directory.GetCurrentDirectory(), "Models");
-            var dictionaryPath = Path.Combine(modelPath, "cmudict-en-us.dict");
-            var languageModelPath = Path.Combine(modelPath, "en-us.lm.dmp");
-            var configuration = new Configuration
+            try
             {
-                AcousticModelPath = modelPath,
-                DictionaryPath = dictionaryPath,
-                LanguageModelPath = languageModelPath
-            };
-            _recognizer = new StreamSpeechRecognizer(configuration);
+                CanLoadModels = false;
+                CanLoadGrammar = true;
 
-            CanTranscribe = true;
-            CanListen = false;
+                var modelPath = Path.Combine(Directory.GetCurrentDirectory(), "Models");
+                var dictionaryPath = Path.Combine(modelPath, "cmudict-en-us.dict");
+                var languageModelPath = Path.Combine(modelPath, "en-us.lm.dmp");
+                var configuration = new Configuration
+                {
+                    AcousticModelPath = modelPath,
+                    DictionaryPath = dictionaryPath,
+                    LanguageModelPath = languageModelPath
+                };
+                _recognizer = new StreamSpeechRecognizer(configuration);
+
+                CanTranscribe = true;
+                CanListen = false;
+            }
+            catch (Exception exception)
+            {
+                this.LogError(exception);
+            }
         }
         public DelegateCommand LoadModelCommand { get; set; }
 
@@ -244,36 +265,52 @@ namespace SpeechDemo.ViewModel
 
         public void StartRecognition(Stream stream)
         {
-            CanTranscribe = false;
-            _recognizer.StartRecognition(stream);
-            var result = _recognizer.GetResult();
-            _recognizer.StopRecognition();
-            if (result != null)
+            try
             {
-                MessageBox.Show(result.GetHypothesis());
+                CanTranscribe = false;
+                _recognizer.StartRecognition(stream);
+                var result = _recognizer.GetResult();
+                _recognizer.StopRecognition();
+                if (result != null)
+                {
+                    MessageBox.Show(result.GetHypothesis());
+                }
+                stream.Close();
+                CanTranscribe = true;
             }
-            stream.Close();
-            CanTranscribe = true;
+            catch (Exception exception)
+            {
+                this.LogError(exception);
+            }
         }
         public DelegateCommand StartRecognitionCommand { get; set; }
 
         public void StartListening()
         {
-            if (ListenerString == "Start Listening")
+            try
             {
-                _waveSource = new WaveIn { WaveFormat = new WaveFormat(16000, 1) };
-                _waveSource.DataAvailable += waveSource_DataAvailable;
-                _waveSource.RecordingStopped += waveSource_RecordingStopped;
-                _collectedData = new MemoryStream();
-                _waveFile = new WaveFileWriter(_collectedData, _waveSource.WaveFormat);
-                _waveSource.StartRecording();
-                ListenerString = "Stop Listening";
+                if (ListenerString == "Start Listening")
+                {
+                    _waveSource = new WaveIn { WaveFormat = new WaveFormat(16000, 1) };
+                    _waveSource.DataAvailable += waveSource_DataAvailable;
+                    _waveSource.RecordingStopped += waveSource_RecordingStopped;
+                    _collectedData = new MemoryStream();
+                    _waveFile = new WaveFileWriter(_collectedData, _waveSource.WaveFormat);
+                    _waveSource.StartRecording();
+                    ListenerString = "Stop Listening";
+                }
+                else if (ListenerString == "Stop Listening")
+                {
+                    _waveSource.StopRecording();
+                    ListenerString = "Start Listening";
+                }
             }
-            else if (ListenerString == "Stop Listening")
+            catch (Exception exception)
             {
-                _waveSource.StopRecording();
-                ListenerString = "Start Listening";
+               this.LogError(exception);
+               this.LogInfo("PLEASE CHECK IF MIC IS CONNECTED.");
             }
+            
         }
         public DelegateCommand StartListeningCommand { get; set; }
 
@@ -281,45 +318,11 @@ namespace SpeechDemo.ViewModel
 
         #region Helper Methods/Events
 
-        private static bool Late(Guid id, bool condition, int minimumTime)
-        {
-            if (LateHash.ContainsKey(id) == false)
-            {
-                LateHash.Add(id, new SynWatch());
-                LateHash[id].Start();
-                return false;
-            }
-            else
-            {
-                if (condition)
-                {
-                    if (LateHash[id].ElapsedMilliseconds() > minimumTime)
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    LateHash[id].Reset();
-                    LateHash[id].Start();
-                    return false;
-                }
-            }
-
-            return false;
-        }
-
         private void micTimer_Elapsed(object sender, EventArgs e)
         {
             try
             {
                 MicLevel  = new MMDeviceEnumerator().GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia).AudioMeterInformation.MasterPeakValue * 1000;
-                //if (CanListen == false && Late(_theGuid, MicLevel < 4, 500)
-                //    && _collectedData != null && _collectedData.Length > 1000)
-                //{
-                //    if (_waveSource != null) _waveSource.StopRecording();
-                //    LateHash.Remove(_theGuid);
-                //}
             }
             catch (Exception exception)
             {
@@ -337,37 +340,43 @@ namespace SpeechDemo.ViewModel
 
         private void waveSource_RecordingStopped(object sender, StoppedEventArgs e)
         {
-            if (_waveSource != null)
+            try
             {
-                _waveSource.Dispose();
-                _waveSource = null;
-            }
-
-            _collectedData.Position = 0;
-
-            var fileStream = new FileStream("speech.wav", FileMode.Create);
-
-            _collectedData.CopyTo(fileStream);
-            _collectedData.Position = 0;
-
-
-            if (fileStream.Length > 1000)
-            {
-                CanListen = false;
-                _recognizer.StartRecognition(_collectedData);
-                var result = _recognizer.GetResult();
-                _recognizer.StopRecognition();
-                if (result != null)
+                if (_waveSource != null)
                 {
-                    MessageBox.Show(result.GetHypothesis());
+                    _waveSource.Dispose();
+                    _waveSource = null;
                 }
-                _collectedData.Close();
+
+                _collectedData.Position = 0;
+
+                var fileStream = new FileStream("speech.wav", FileMode.Create);
+
+                _collectedData.CopyTo(fileStream);
+                _collectedData.Position = 0;
+
+
+                if (fileStream.Length > 1000)
+                {
+                    CanListen = false;
+                    _recognizer.StartRecognition(_collectedData);
+                    var result = _recognizer.GetResult();
+                    _recognizer.StopRecognition();
+                    if (result != null)
+                    {
+                        MessageBox.Show(result.GetHypothesis());
+                    }
+                    _collectedData.Close();
+                }
+
+                fileStream.Close();
+
+                CanListen = true;
             }
-
-            fileStream.Close();
-
-            CanListen = true;
-
+            catch (Exception exception)
+            {
+                this.LogError(exception);
+            }
         }
 
         private void LoggerMessageReceeived(object sender, LogReceivedEventArgs e)
