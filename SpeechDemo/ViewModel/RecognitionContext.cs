@@ -324,7 +324,7 @@ namespace SpeechDemo.ViewModel
             {
                 MicLevel  = new MMDeviceEnumerator().GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia).AudioMeterInformation.MasterPeakValue * 1000;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 //this.LogError(exception);
             }

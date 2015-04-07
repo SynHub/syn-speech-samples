@@ -98,7 +98,6 @@ H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\bin\Release\ko\System.Windo
 H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\bin\Release\ru\System.Windows.Interactivity.resources.dll
 H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\bin\Release\zh-Hans\System.Windows.Interactivity.resources.dll
 H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\bin\Release\zh-Hant\System.Windows.Interactivity.resources.dll
-H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\obj\Release\SpeechDemo.csprojResolveAssemblyReference.cache
 H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\obj\Release\View\MainWindow.g.cs
 H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\obj\Release\App.g.cs
 H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\obj\Release\GeneratedInternalTypeHelper.g.cs
