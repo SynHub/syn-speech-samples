@@ -61,9 +61,9 @@
     <Reference Include="NAudio">
       <HintPath>..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="Syn.Speech, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Syn.Speech.1.0.2\lib\net45\Syn.Speech.dll</HintPath>
+    <Reference Include="Syn.Speech, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syn.Speech.1.0.3\lib\net45\Syn.Speech.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

@@ -107,3 +107,4 @@ H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\obj\Release\View\MainWindow
 H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\obj\Release\SpeechDemo.g.resources
 H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\obj\Release\SpeechDemo.Properties.Resources.resources
 H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\obj\Release\SpeechDemo.csproj.GenerateResource.Cache
+H:\GitHub\Syn.Speech.Demo\Syn.Speech.Demo\SpeechDemo\obj\Release\SpeechDemo.csprojResolveAssemblyReference.cache
